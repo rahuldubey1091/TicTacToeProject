@@ -1,4 +1,4 @@
-# Tic Tac Toe - Round 2
+# Tic Tac Toe 
 
 Full-stack Tic Tac Toe application built for the Round 2 problem statement.
 
@@ -13,7 +13,7 @@ Full-stack Tic Tac Toe application built for the Round 2 problem statement.
 ## Project Structure
 
 ```text
-tictactoe-round2-end-to-end/
+tictactoe/
 ├── frontend/
 └── backend/
     ├── TicTacToe.Api/
