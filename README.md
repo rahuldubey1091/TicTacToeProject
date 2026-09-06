@@ -1,6 +1,6 @@
 # Tic Tac Toe 
 
-Full-stack Tic Tac Toe application built for the Round 2 problem statement.
+Full-stack Tic Tac Toe application 
 
 ## Stack
 
