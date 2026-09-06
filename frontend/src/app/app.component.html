@@ -1,0 +1,90 @@
+<main class="page">
+  <section class="card">
+    <header class="header">
+      <div>
+        <h1>Tic Tac Toe</h1>
+        <p>Angular + .NET Web API</p>
+      </div>
+
+      <label class="mode">
+        Game mode
+        <select [(ngModel)]="selectedMode" (change)="onModeChange()">
+          <option value="TwoPlayer">Two Player</option>
+          <option value="Computer">Play Against Computer</option>
+        </select>
+      </label>
+    </header>
+
+    @if (game) {
+      <section class="status">
+        @if (game.gameStatus === 'InProgress') {
+          <strong>{{ game.currentPlayer }}'s turn</strong>
+          @if (game.gameMode === 'Computer' && game.currentPlayer === 'O') {
+            <span>Computer is thinking...</span>
+          }
+        } @else if (game.gameStatus === 'Won') {
+          <strong>Player {{ game.winner }} wins!</strong>
+        } @else {
+          <strong>It's a draw!</strong>
+        }
+      </section>
+
+      @if (error) {
+        <div class="error">{{ error }}</div>
+      }
+
+      <section class="content">
+        <div class="board">
+          @for (row of [0,1,2]; track row) {
+            @for (column of [0,1,2]; track column) {
+              <button
+                class="cell"
+                [class.winning]="isWinningCell(row, column)"
+                [disabled]="busy || game.gameStatus !== 'InProgress' || !!game.board[row][column]"
+                [attr.aria-label]="cellLabel(row, column)"
+                (click)="play(row, column)">
+                {{ game.board[row][column] ?? '' }}
+              </button>
+            }
+          }
+        </div>
+
+        <aside class="side">
+          <div class="panel">
+            <h2>Scoreboard</h2>
+            <div class="scores">
+              <div><span>X Wins</span><b>{{ game.scoreboard.xWins }}</b></div>
+              <div><span>O Wins</span><b>{{ game.scoreboard.oWins }}</b></div>
+              <div><span>Draws</span><b>{{ game.scoreboard.draws }}</b></div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <h2>Move History</h2>
+            @if (game.moveHistory.length === 0) {
+              <p class="muted">No moves yet.</p>
+            } @else {
+              <div class="history">
+                @for (move of game.moveHistory; track move.moveNumber) {
+                  <div class="history-row">
+                    <span>#{{ move.moveNumber }}</span>
+                    <b>{{ move.player }}</b>
+                    <span>Row {{ move.row + 1 }}, Col {{ move.column + 1 }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </aside>
+      </section>
+
+      <footer class="actions">
+        <button (click)="resetGame()" [disabled]="busy">Reset Game</button>
+        <button (click)="undo()" [disabled]="busy || game.moveHistory.length === 0 || game.gameStatus !== 'InProgress'">
+          Undo Last Move
+        </button>
+        <button class="secondary" (click)="resetScoreboard()" [disabled]="busy">Reset Scoreboard</button>
+      </footer>
+    }
+  </section>
+</main>
